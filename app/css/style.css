@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    height: 100vh;
+    background-image: url("../res/background.svg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.main-content {
+    max-width: 414px;
+    margin: 0 auto;
+    padding-top: 80px;
+    text-align: center;
+}
+
+#logo {
+    width: 230px;
+    height: 230px;
+    padding-left: 75px;
+}
+
+#volume-button {
+    width: 50px;
+    height: 50px;
+}
+
+.volume {
+    position: absolute;
+    right: 50px;
+    top: 50px;
+}
+
+header h2 {
+    margin: 0;
+    font-weight: 400;
+    font-size: 3em;
+    color: #21427c;
+    letter-spacing: 7px;
+}
+
+.data {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 79px;
+}
+
+.data .text-content {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: #21427c;
+}
+
+.data .number-content {
+    padding-top: 5px;
+    font-size: 3em;
+    color: #2b61d8;
+    font-weight: 700;
+}
+
+.play-button {
+    margin-top: 50px;    
+}
+
+.play-button a {
+    display: flex;
+    justify-content: center;
+    height: 75px;
+    align-items: center;
+    text-decoration: none;
+    font-size: 2.75em;
+    letter-spacing: 5px;
+    line-height: 0.75em;
+    font-weight: 700;
+    color: #21427c;
+    border: 2px solid #21427c;
+    border-radius: 10px;
+    transition: all 0.8s ease-in-out 0s;    
+}
+
+.play-button a:hover {
+    background-color: #21427c;
+    color: #ffffff;   
+}
+
+footer {
+    position: absolute;
+    bottom: 10px;
+    color:#b7b7b7;
+    text-align: center;
+    right: 0;
+    left: 0;
+}
+
