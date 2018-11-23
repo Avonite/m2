@@ -69,7 +69,8 @@ header h2 {
 }
 
 .play-button {
-    margin-top: 50px;    
+    margin-top: 50px;
+    position: relative;    
 }
 
 .play-button a {
@@ -85,7 +86,7 @@ header h2 {
     color: #21427c;
     border: 2px solid #21427c;
     border-radius: 10px;
-    transition: all 0.8s ease-in-out 0s;    
+    transition: all 0.3s ease-in-out 0s;    
 }
 
 .play-button a:hover {
@@ -93,12 +94,31 @@ header h2 {
     color: #ffffff;   
 }
 
+.text-cloud {
+    position: absolute;
+    left: 99%;
+    top: -113px;
+    width: 415px;
+    color: #21427c;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.text-cloud p {
+    position: absolute;
+    top: 15px;
+    left: 60px;
+    right: 30px;
+}
+
 footer {
     position: absolute;
-    bottom: 10px;
-    color:#b7b7b7;
-    text-align: center;
-    right: 0;
-    left: 0;
+    bottom: 0px;    
+    color: #b7b7b7;    
+    text-align: center;    
+    right: 0;    
+    left: 0;    
+    background-color: #fff;    
+    padding-bottom: 10px;
 }
 
