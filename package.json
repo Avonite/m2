@@ -1,0 +1,22 @@
+{
+  "name": "m2",
+  "version": "1.0.0",
+  "description": "Implementation of oldschool boardgame Mastermind during course Web and Database Technology (CSE1500) at TU Delft. \r Game is played with 2 players, 1v1, over the internet using websockets.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Avonite/m2.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Avonite/m2/issues"
+  },
+  "homepage": "https://github.com/Avonite/m2#readme",
+  "dependencies": {
+    "node": "^11.2.0"
+  }
+}
