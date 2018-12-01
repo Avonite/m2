@@ -9,7 +9,7 @@ html, body {
 body {
     font-family: 'Quicksand', sans-serif;
     height: 100vh;
-    background-image: url("../res/background.svg");
+    background-image: url("../images/background.svg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
