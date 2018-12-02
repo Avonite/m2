@@ -4,6 +4,7 @@
   "description": "Implementation of oldschool boardgame Mastermind during course Web and Database Technology (CSE1500) at TU Delft. \r Game is played with 2 players, 1v1, over the internet using websockets.",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js 3000",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/Avonite/m2#readme",
   "dependencies": {
-    "node": "^11.2.0"
+    "express": "^4.16.4",
+    "node": "^11.2.0",
+    "ws": "^6.1.2"
   }
 }
