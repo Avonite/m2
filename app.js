@@ -2,6 +2,8 @@ var express = require("express");
 var http = require("http");
 var path = require("path");
 
+var wss = require("./app/communication/webSocketServer");
+
 var port = process.argv[2];
 var app = express();
 
@@ -17,3 +19,7 @@ app.use(express.static(__dirname + "/public"));
 
 // Listen for incoming requests
 http.createServer(app).listen(port);
+
+
+// Setup websocket server
+wss.start();
