@@ -31,7 +31,8 @@
             </div>
         </div>
         <div class="braker-screen">
-            <div class="pin-line line-1">
+          <% for(var i=1; i <= 10; i++) { %>
+            <div class="pin-line line-<%= i %>">
                 <div class="slider slider-left"></div>
                 <div class="pin"></div>
                 <div class="pin"></div>
@@ -39,78 +40,7 @@
                 <div class="pin"></div>
                 <div class="slider slider-right slider-one"></div>
             </div>
-            <div class="pin-line line-2">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-3">
-                <div class="slider slider-left slider-three"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-4">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-5">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-6">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-7">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-8">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-9">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
-            <div class="pin-line line-10">
-                <div class="slider slider-left"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="pin"></div>
-                <div class="slider slider-right"></div>
-            </div>
+          <% } %>
         </div>
     </div>
 
