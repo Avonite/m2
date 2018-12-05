@@ -1,5 +1,83 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
 
+
+@-webkit-keyframes textCloudIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.1) rotate(30deg);
+    transform: scale(0.1) rotate(30deg);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+  }
+
+  50% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+
+  70% {
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes textCloudIn {
+  from {
+    opacity: 0;
+    -webkit-transform: scale(0.1) rotate(30deg);
+    transform: scale(0.1) rotate(30deg);
+    -webkit-transform-origin: center bottom;
+    transform-origin: center bottom;
+  }
+
+  50% {
+    -webkit-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+
+  70% {
+    -webkit-transform: rotate(3deg);
+    transform: rotate(3deg);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@-webkit-keyframes textCloudOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+@keyframes textCloudOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+
 html, body {
     margin: 0;
     padding: 0;
@@ -71,7 +149,7 @@ header h2 {
 
 .play-button {
     margin-top: 50px;
-    position: relative;    
+    position: relative;
 }
 
 .play-button a {
@@ -87,12 +165,12 @@ header h2 {
     color: #21427c;
     border: 2px solid #21427c;
     border-radius: 10px;
-    transition: all 0.3s ease-in-out 0s;    
+    transition: all 0.3s ease-in-out 0s;
 }
 
 .play-button a:hover {
     background-color: #21427c;
-    color: #ffffff;   
+    color: #ffffff;
 }
 
 .text-cloud {
@@ -103,6 +181,25 @@ header h2 {
     color: #21427c;
     font-size: 1.5em;
     font-weight: 700;
+    opacity: 0;
+}
+
+.text-cloud-visible {
+    -webkit-animation-name: textCloudIn;
+    animation-name: textCloudIn;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.text-cloud-hidden {
+    -webkit-animation-name: textCloudOut;
+    animation-name: textCloudOut;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
 }
 
 .text-cloud p {
@@ -114,12 +211,11 @@ header h2 {
 
 footer {
     position: absolute;
-    bottom: 0px;    
-    color: #b7b7b7;    
-    text-align: center;    
-    right: 0;    
-    left: 0;    
-    background-color: #fff;    
+    bottom: 0px;
+    color: #b7b7b7;
+    text-align: center;
+    right: 0;
+    left: 0;
+    background-color: #fff;
     padding-bottom: 10px;
 }
-

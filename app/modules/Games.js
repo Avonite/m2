@@ -1,4 +1,5 @@
 const Game = require("../models/Game");
+const wss = require("../communication/webSocketServer");
 
 module.exports = (function(){
 
@@ -11,6 +12,7 @@ module.exports = (function(){
       if(game.isAvailable()){
         // if found, set this user as braker
         game.setBraker(user);
+        wss.broadcast({action: 'playerWaitingChange', props: {playerIsWaiting: false}});
         return;
       }
     }
@@ -19,6 +21,7 @@ module.exports = (function(){
     // this user will be the maker
     var game = new Game(user);
     games.push(game);
+    wss.broadcast({action: 'playerWaitingChange', props: {playerIsWaiting: true}});
   }
 
   // get amount of active games

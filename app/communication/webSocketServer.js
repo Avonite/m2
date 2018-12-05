@@ -1,14 +1,30 @@
 const ws = require("ws");
 const User = require("../models/User");
-const Games = require("../modules/Games");
+
+var wss = null;
 
 module.exports.start = function(){
-  var wss = new ws.Server({port: 8080});
+  wss = new ws.Server({port: 8080});
 
   wss.on("connection", function(ws){
 
     var user = new User(ws);
-    Games.connectUser(user);
 
+  });
+}
+
+module.exports.broadcast = function(data){
+  if(wss == null){
+    return false;
+  }
+
+  if(typeof data !== "String"){
+    data = JSON.stringify(data);
+  }
+
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === ws.OPEN) {
+      client.send(data);
+    }
   });
 }
