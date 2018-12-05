@@ -45,14 +45,14 @@ body {
     width: 460px;
     margin: 0 auto;
     padding-top: 20px;
-    background-color: white;   
+    background-color: white;
 }
 
 .maker-screen {
     border: 3px solid #2b61d8;
     border-radius: 20px;
     height: 7.5%;
-    box-shadow: 3px 5px 10px 0px #dcd0d0;
+    /* box-shadow: 3px 5px 10px 0px #dcd0d0; */
 }
 
 .braker-screen {
@@ -65,7 +65,7 @@ body {
     margin-top: 20px;
     padding-top: 20px;
     padding-bottom: 20px;
-    box-shadow: 3px 5px 10px 0px #dcd0d0;
+    /* box-shadow: 3px 5px 10px 0px #dcd0d0; */
 }
 
 .pin-line {
@@ -97,17 +97,62 @@ body {
     height: 19px;
     top: 22px;
     background-color: gray;
+    z-index: -1;
+    transition: transform 0.3s ease-in-out;
+}
+
+.slider-right.slider-one {
+    transform: translateX(20px);
+}
+
+.slider-left.slider-one {
+    transform: translateX(-20px);
+}
+
+.slider-right.slider-two {
+    transform: translateX(40px);
+}
+
+.slider-left.slider-two {
+    transform: translateX(-40px);
+}
+
+.slider-right.slider-three {
+    transform: translateX(60px);
+}
+
+.slider-left.slider-three {
+    transform: translateX(-60px);
+}
+
+.slider:after {
+    width: 100px;
+    height: 15px;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 2px;
+}
+
+.slider-left:after {
+    background: #2B61D8;
+    left: 100%;
 }
 
 .slider-left {
     left: -38px;
 }
 
+.slider-right:after {
+    background: #FF4019;
+    right: 100%;
+}
+
 .slider-right {
     right: -38px;
 }
 
-.control-panel { 
+.control-panel {
     position: fixed;
     bottom: 0;
     left: 50%;
@@ -135,12 +180,13 @@ body {
     border-radius: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    transition: all 0.3s ease-in-out 0s;    
+    transition: all 0.3s ease-in-out 0s;
+    cursor: pointer;
 }
 
 .button:hover {
     background-color: #21427c;
-    color: #ffffff;   
+    color: #ffffff;
 }
 
 .colors {
@@ -153,7 +199,7 @@ body {
     border-radius: 100%;
     margin-left: 10px;
     margin-right: 10px;
-    box-shadow: 3px 5px 10px 0px #dcd0d0;
+    /* box-shadow: 3px 5px 10px 0px #dcd0d0; */
 }
 
 .red {
