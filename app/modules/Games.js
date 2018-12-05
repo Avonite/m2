@@ -21,8 +21,22 @@ module.exports = (function(){
     games.push(game);
   }
 
+  // get amount of active games
+  function size(){
+    var size = 0;
+
+    for(var i = 0; i < games.length; i++){
+      if(games[i].isActive()){
+        size++;
+      }
+    }
+
+    return size;
+  }
+
   return {
     connectUser: connectUser,
+    size: size,
   }
 
 })();
