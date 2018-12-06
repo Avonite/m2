@@ -14,7 +14,7 @@ function Game(maker){
     this.active = true;
 
     this.braker.getWebSocket().on("message", receiveFromBraker.bind(this));
-    this.maker.getWebSocket().on("close", brakerDisconnected.bind(this));
+    this.braker.getWebSocket().on("close", brakerDisconnected.bind(this));
   }
 
   // Check if braker is needed to start game
