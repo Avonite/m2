@@ -7,6 +7,8 @@ function Game(maker){
   this.maker.getWebSocket().on("message", receiveFromMaker.bind(this));
   this.maker.getWebSocket().on("close", makerDisconnected.bind(this));
 
+  this.maker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "maker"}}));
+
   // Set the braker for this game
   this.setBraker = function(braker){
     console.log("A braker is added to a game");
@@ -15,6 +17,12 @@ function Game(maker){
 
     this.braker.getWebSocket().on("message", receiveFromBraker.bind(this));
     this.braker.getWebSocket().on("close", brakerDisconnected.bind(this));
+
+    this.braker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "braker"}}));
+
+    this.maker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
+    this.braker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
+
   }
 
   // Check if braker is needed to start game
@@ -55,8 +63,11 @@ function receiveFromMaker(data){
   }
 
   switch(action){
-    case "ready":
-
+    case "codeReady":
+      this.braker.getWebSocket().send(JSON.stringify({
+        action: 'codeReady',
+        props: {}
+      }));
     break;
 
     default:
@@ -79,6 +90,12 @@ function receiveFromBraker(data){
   if(typeof action == 'undefined'){
     console.log("Undefined action was received from maker");
     return;
+  }
+
+  switch(action){
+    case "verifyPinline":
+      this.maker.getWebSocket().send(JSON.stringify(data));
+    break;
   }
 }
 
