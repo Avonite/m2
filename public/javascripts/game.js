@@ -130,6 +130,7 @@ function Game() {
   // display a message in the message html element
   this.message = function(m){
     this.messageElement.innerHTML = m;
+    document.title = m;
   }
 
   // send action and props as JSON to webserver via websocket
@@ -178,6 +179,19 @@ function Game() {
         this.message("Please verify the pinline");
         this.switchTurns();
       break;
+
+      // other player disconnected
+      // redirect to splash screen
+      case "disconnected":
+        let i = 5
+        let $this = this;
+        setInterval(function () {
+            if (i == 0) {
+                window.location = "/"           
+            }
+            $this.message("Opponent disconnected, abort mission in: " + i)
+            i--;
+        }, 1000);        
     }
 
   }
