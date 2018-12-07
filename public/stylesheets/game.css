@@ -254,6 +254,11 @@ body {
     margin-left: 10px;
     margin-right: 10px;
     /* box-shadow: 3px 5px 10px 0px #dcd0d0; */
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out 0s;
+}
+.color:hover{
+    transform: scale(1.1);
 }
 
 .red {
