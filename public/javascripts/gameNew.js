@@ -59,7 +59,7 @@ function randomClickEvent(event) {
     let colors = ["red", "yellow", "blue", "green", "gray", "purple", "black", "orange"];
     for (let i = 0; i < 4; i++) {
         // TODO: set colors index to random value between 0 and 7
-        game.setColorCurrentPin(colors[i+1]); 
+        game.setColorCurrentPin(Math.floor(Math.random()*7));
     }       
 }
 
