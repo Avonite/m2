@@ -1,98 +1,74 @@
 function Game(id) {
-    // Unique identifier for each game. 
-    this.id = id;
-    // This array holds all pinlines in the braker field.
-    this.pinlinesBraker = [];
-    // This array holds the pins in the maker field.
-    this.pinlineMaker = [];
-    // Current pinline during playing of the game, starting at the bottom. 
-    this.currentPinLine = 0;
-    // Current pin within the pinline, counting from left to right
+    this.brakerScreen = [];
+    this.makerScreen = [];
     this.currentPin = 0;
+    this.nextPin = true;
 
-    // Fills pinlinesBraker with Pinline objects; represents braker-screen
-    this.createPinlinesBraker = function() {
-        let HTMLPinlines = document.getElementsByClassName("pin-line");
-        for (let i = 1; i < HTMLPinlines.length; i++) {
-            let pinline = new Pinline(HTMLPinlines[i].getElementsByClassName("pin"));
-            this.pinlinesBraker.push(pinline);
+    this.createBrakerScreen = function () {
+        let pinElements = document.getElementsByClassName('pin');
+        for (let i = pinElements.length - 1; i >= 4; i--) {
+            this.brakerScreen.push(pinElements[i]);
         }
     };
-    this.createPinlinesBraker();
+    this.createBrakerScreen();
 
-    // Fills pinlineMaker with Pinline objects; represents maker-screen
-    this.createPinlineMaker = function() {
-        // Get elements with classname "pin"
-        let HTMLPinline = document.getElementsByClassName("pin-line")[0].getElementsByClassName("pin");
-        this.pinlineMaker = new Pinline(HTMLPinline);
+    this.createMakerScreen = function () {
+        let pinElements = document.getElementsByClassName('pin');
+        for (let i = 3; i >= 0; i--) {
+            this.makerScreen.push(pinElements[i]);
+        }
     };
-    this.createPinlineMaker();
+    this.createMakerScreen();
 
-    // Returns current pin element;
-    this.getCurrentPin = function() {
-        let line = this.pinlinesBraker[this.currentPinLine];
-        console.log(line);
-        let pinsArr = line.pins;
-        let pin = pinsArr[this.currentPin].element;
-        return pin;
+    this.getCurrentPinElement = function() {
+        return this.brakerScreen[this.currentPin];
     };
 
-    // Increases currentPin by 1 
-    this.increaseCurrentPin = function () {
-        if (this.currentPin == 3) {
-            this.currentPinLine += 1;
-            this.currentPin = 0;
+    this.incrCurrentPin = function() {
+        if ((this.currentPin + 1) % 4 === 0) {
+            this.nextPin = false;
+            this.currentPin += 1;
         } else {
             this.currentPin += 1;
-        }        
-    };
-}
-
-function Pinline(line) {
-    this.pins = [];
-    this.isUsed = false;
-
-    // Saves pin objects in array pins
-    this.createPinline = function(line) {
-        for (let i = 0; i < line.length; i++) {
-            let pin =  new Pin(line[i]);
-            this.pins.push(pin);
         }
     };
-    this.createPinline(line);  
 
-    // Get pins array
-    this.getPins = function () {
-        return this.pins;
-    };
-}
-
-function Pin(element) {
-    this.color = null;
-    this.element = element;
-
-    this.setColor = function(color) {
-        this.color = color;
+    this.setNextPin = function(bool) {
+        this.nextPin = bool;
     };
 
-    this.getColor = function() {
-        return this.color;
-    };
-
-    this.getElement = function() {
-        return this.element;
+    this.setColorCurrentPin = function(color) {
+        if (game.nextPin) {
+            let pinElement = this.getCurrentPinElement();
+            pinElement.classList.add(color);
+            game.incrCurrentPin();
+        }
     };
 }
 
 function colorClickEvent(event) {
-    // Get current div element
-    let pinElement = currentGame.getCurrentPin();   
-    // Get color
     let color = event.srcElement.classList[1];
-    // Add color to div element
-    pinElement.classList.add(color);
-    currentGame.increaseCurrentPin();
+    game.setColorCurrentPin(color);
 }
 
-// Game is started
-var currentGame = new Game(1);
+function exitClickEvent(event) {
+    alert("Do you really want to close this game? It's so much fun!");
+}
+
+function randomClickEvent(event) {
+    let colors = ["red", "yellow", "blue", "green", "gray", "purple", "black", "orange"];
+    for (let i = 0; i < 4; i++) {
+        // TODO: set colors index to random value between 0 and 7
+        game.setColorCurrentPin(Math.floor(Math.random()*7));
+    }       
+}
+
+function checkClickEvent(event) {
+    game.setNextPin(true);
+}
+
+function clearClickEvent(event) {
+    // TODO: clears colors in current row
+}
+
+var game = new Game(0);
