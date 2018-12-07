@@ -18,16 +18,18 @@ function Game(maker){
     this.braker.getWebSocket().on("message", receiveFromBraker.bind(this));
     this.braker.getWebSocket().on("close", brakerDisconnected.bind(this));
 
-    this.braker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "braker"}}));
+    if(this.isActive()){
+      this.braker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "braker"}}));
 
-    this.maker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
-    this.braker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
+      this.maker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
+      this.braker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
+    }
 
   }
 
   // Check if braker is needed to start game
   this.isAvailable = function(){
-    return this.braker == null;
+    return this.maker != null && this.braker == null;
   }
 
   this.isActive = function(){
@@ -39,18 +41,25 @@ function Game(maker){
 function makerDisconnected(){
   this.active = false;
   this.maker = null;
-  this.braker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
+  if(this.braker != null){
+    this.braker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
+  }
   console.log("Maker disconnected");
 }
 
 function brakerDisconnected(){
   this.active = false;
   this.braker = null;
-  this.maker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
+  if(this.maker != null){
+    this.maker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
+  }
   console.log("Braker disconnected");
 }
 
 function receiveFromMaker(data){
+  if(!this.isActive()){
+    return false;
+  }
   // Try to parse received data as JSON
   try{
     var data = JSON.parse(data);
@@ -81,7 +90,10 @@ function receiveFromMaker(data){
 }
 
 function receiveFromBraker(data){
-    // Try to parse received data as JSON
+  if(!this.isActive()){
+    return false;
+  }
+  // Try to parse received data as JSON
   try{
     var data = JSON.parse(data);
   }catch(e){
