@@ -38,11 +38,15 @@ function Game(maker){
 
 function makerDisconnected(){
   this.active = false;
+  this.maker = null;
+  this.braker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
   console.log("Maker disconnected");
 }
 
 function brakerDisconnected(){
   this.active = false;
+  this.braker = null;
+  this.maker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
   console.log("Braker disconnected");
 }
 
