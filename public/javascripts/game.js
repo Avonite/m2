@@ -25,6 +25,8 @@ function Game() {
       this.pinlines.push(new Pinline(pinlines[i], this));
     }
 
+    this.pinlines.reverse();
+
     // store the codeline html element
     this.codeline = new Pinline(document.getElementsByClassName("maker-screen")[0].getElementsByClassName("pin-line")[0], this);
     // store the message html element
