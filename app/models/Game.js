@@ -42,7 +42,7 @@ function makerDisconnected(){
   this.active = false;
   this.maker = null;
   if(this.braker != null){
-    this.braker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
+    this.braker.getWebSocket().send(JSON.stringify({action: 'disconnected', props: {}}));
   }
   console.log("Maker disconnected");
 }
@@ -51,7 +51,7 @@ function brakerDisconnected(){
   this.active = false;
   this.braker = null;
   if(this.maker != null){
-    this.maker.getWebSocket().send(JSON.Stringify({action: 'disconnected', props: {}}));
+    this.maker.getWebSocket().send(JSON.stringify({action: 'disconnected', props: {}}));
   }
   console.log("Braker disconnected");
 }
