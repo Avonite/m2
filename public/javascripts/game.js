@@ -6,6 +6,8 @@ function Game() {
   this.pinlines = [];           // all pinlines for braker
   this.ws = null;               // socket to webserver
   this.messageElement = null;   // message html element
+  this.muted = false;           // whether sound must be muted;
+  this.mute_btn = null;         // the mute button
 
   // will be run at the when new Game object is created
   this.init = function(){
@@ -31,6 +33,9 @@ function Game() {
     this.codeline = new Pinline(document.getElementsByClassName("maker-screen")[0].getElementsByClassName("pin-line")[0], this);
     // store the message html element
     this.messageElement = document.querySelector(".message-board p");
+
+    this.mute_btn = document.querySelector(".volume");
+    this.mute_btn.addEventListener("click", this.changeMute.bind(this));
   }
 
   // whether this user is a braker
@@ -53,6 +58,19 @@ function Game() {
     return this.started;
   }
 
+  this.changeMute = function(){
+    this.muted = !this.muted;
+    if(this.isMuted()){
+      this.mute_btn.classList.add('muted');
+    }else{
+      this.mute_btn.classList.remove('muted');
+    }
+  }
+
+  this.isMuted = function(){
+    return this.muted;
+  }
+
   // get the current pinline on the brakers-screen
   this.currentPinline = function(){
     for(var i = 0; i < this.pinlines.length; i++){
@@ -68,11 +86,12 @@ function Game() {
   // in case of a braker the next pin is on the braker-screen
   // for a maker it'll be used to set the codeline
   this.setNextPinColor = function(color){
+    var pinline
     if(this.isBraker()){
-      var pinline = this.currentPinline();
+      pinline = this.currentPinline();
       if(pinline == null) return false;
     }else{
-      var pinline = this.codeline;
+      pinline = this.codeline;
       if(pinline == null) return false;
     }
 
@@ -146,6 +165,7 @@ function Game() {
       // braker asks maker to verify his or her guess
       case "verifyPinline":
         this.currentPinline().forceColors(props.colors);
+        this.currentPinline().setDone(true);
         this.message("Please verify the pinline");
         this.switchTurns();
       break;
@@ -163,6 +183,23 @@ function Game() {
     }
   }
 
+  // clear the current pinline
+  this.clear = function(){
+    if(this.isBraker()){
+      this.currentPinline().clear();
+    }else{
+      this.codeline.clear();
+    }
+  }
+
+  this.random = function(){
+    if(this.isBraker()){
+      this.currentPinline().random();
+    }else{
+      this.codeline.random();
+    }
+  }
+
   // execution of 'constructor'
   this.init();
 }
@@ -175,6 +212,8 @@ function Pinline(pinline, game) {
   this.checked = false;           // whether the maker has verified this guess
   this.correct_position = 0;      // how many pins are in the correct position
   this.correct_color = 0;         // how many pins have the right color
+  this.correct_position_slider = null;
+  this.correct_color_slider = null;
   this.pins = [];                 // all the pins in this pinline
 
   // 'constructor'
@@ -185,11 +224,23 @@ function Pinline(pinline, game) {
     for(var i = 0; i < pins.length; i++){
       this.pins.push(new Pin(pins[i], this));
     }
+
+    this.correct_color_slider = this.element.querySelector(".slider-left");
+    this.correct_position_slider = this.element.querySelector(".slider-right");
+
+    if(this.correct_color_slider != null && this.correct_position_slider != null){
+      this.correct_color_slider.addEventListener("click", this.changeCorrectColor.bind(this));
+      this.correct_position_slider.addEventListener("click", this.changeCorrectPosition.bind(this));
+    }
   }
 
   // whether or not this Pinline is done, so whether or not it can still be changed
   this.isDone = function(){
     return this.done;
+  }
+
+  this.setDone = function(done){
+    this.done = done;
   }
 
   // whether the maker has verified this Pinline
@@ -247,12 +298,72 @@ function Pinline(pinline, game) {
     }
   }
 
+  this.random = function(){
+    var available_colors = ["red", "yellow", "blue", "green", "gray", "purple", "black", "orange"];
+    this.clear();
+    for(var i = 0; i < this.pins.length; i++){
+      var index = Math.floor(Math.random() * 8);
+      var color = available_colors[ index ];
+      this.pins[i].setColor(color);
+    }
+  }
+
   // set colors of pins in this pinline
   // forced = even when it's not this user's turn
   this.forceColors = function(colors){
     for(var i = 0; i < this.pins.length; i++){
       this.pins[i].forceColor(colors[i]);
     }
+  }
+
+  // clear all pins in this pinline
+  this.clear = function(){
+    for(var i = 0; i < this.pins.length; i++){
+      this.pins[i].unsetColor();
+    }
+  }
+
+  this.changeCorrectColor = function(){
+    if(!this.game.isMaker() || !this.isDone() || this.checked){
+      return false;
+    }
+    var cl = this.correct_color_slider.classList;
+
+    this.correct_color = this.updateSlider(cl, this.correct_color);
+  }
+
+  this.changeCorrectPosition = function(){
+    if(!this.game.isMaker() || !this.isDone() || this.checked){
+      return false;
+    }
+    var cl = this.correct_position_slider.classList;
+
+    this.correct_position = this.updateSlider(cl, this.correct_position);
+  }
+
+  this.updateSlider = function(cl, current){
+    if(current == 0){
+      cl.remove('slider-four');
+      cl.add("slider-one");
+    }
+    if(current == 1){
+      cl.remove('slider-one');
+      cl.add("slider-two");
+    }
+    if(current == 2){
+      cl.remove('slider-two');
+      cl.add("slider-three");
+    }
+    if(current == 3){
+      cl.remove('slider-three');
+      cl.add("slider-four");
+    }
+    if(current == 4){
+      cl.remove('slider-four');
+      current = -1;
+    }
+    current++;
+    return current;
   }
 
   // call to 'constructor'
@@ -298,6 +409,13 @@ function Pin(pin, pinline) {
     if(!this.game.isMyTurn() || this.pinline.isDone()){
       return;
     }
+
+    this.forceUnsetColor();
+  }
+
+  // unset the color of this pin
+  // even if it's not this user's turn
+  this.forceUnsetColor = function(){
     this.color = null;
 
     this.element.classList.remove("red");
