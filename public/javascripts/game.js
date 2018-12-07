@@ -251,11 +251,12 @@ function Game() {
         var bleep = new Audio('/audio/bleep2.wav');
         bleep.play();
     }
+
     var elem = document.documentElement;
-    var buttonText = document.getElementsByClassName('button')[0];
+    var fullscreenButton = document.getElementById('fullscreen-button');
 
     if(!this.fullscreenOn) {
-        buttonText.innerHTML = "go back";
+        fullscreenButton.src = "/images/exit.svg";
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -264,7 +265,7 @@ function Game() {
             elem.webkitRequestFullscreen();
         }
     } else {
-        buttonText.innerHTML = "fullscreen";
+        fullscreenButton.src = "/images/expand.svg";
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.mozCancelFullScreen) { /* Firefox */
