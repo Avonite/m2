@@ -10,6 +10,8 @@ var splash = (function(){
     web_socket = new WebSocket("ws://localhost:8080");
 
     web_socket.onmessage = process_incoming;
+    
+    new Audio('/audio/into1.mp3');
   }
 
   function process_incoming(data){

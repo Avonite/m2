@@ -8,6 +8,7 @@ function Game() {
   this.messageElement = null;   // message html element
   this.muted = false;           // whether sound must be muted;
   this.mute_btn = null;         // the mute button
+  this.fullscreenOn = false;    // whether fullscreen is on or off
 
   // will be run at the when new Game object is created
   this.init = function(){
@@ -36,6 +37,9 @@ function Game() {
 
     this.mute_btn = document.querySelector(".volume");
     this.mute_btn.addEventListener("click", this.changeMute.bind(this));
+    
+    new Audio('/audio/bleep1.wav');
+    new Audio('/audio/bleep2.wav');
   }
 
   // whether this user is a braker
@@ -97,6 +101,11 @@ function Game() {
 
     var pin = pinline.nextPin();
     if(pin == null) return false;
+
+    if (!this.isMuted()) {
+        var bleep = new Audio('/audio/bleep1.wav');
+        bleep.play();
+    }
 
     pin.setColor(color);
   }
@@ -176,6 +185,10 @@ function Game() {
   // braker: check current pinline, aka ask maker for verification
   // maker: confirm code line
   this.check = function(){
+    if (!this.isMuted()) {
+        var bleep = new Audio('/audio/bleep2.wav');
+        bleep.play();
+    }
     if(this.isBraker()){
       this.currentPinline().check();
     }else{
@@ -185,6 +198,10 @@ function Game() {
 
   // clear the current pinline
   this.clear = function(){
+    if (!this.isMuted()) {
+        var bleep = new Audio('/audio/bleep2.wav');
+        bleep.play();
+    }
     if(this.isBraker()){
       this.currentPinline().clear();
     }else{
@@ -193,11 +210,56 @@ function Game() {
   }
 
   this.random = function(){
+
+    if (!this.isMuted()) {
+        var bleep = new Audio('/audio/bleep2.wav');
+        bleep.play();
+    }
     if(this.isBraker()){
       this.currentPinline().random();
     }else{
       this.codeline.random();
     }
+  }
+
+  this.exit = function() {
+    if (!this.isMuted()) {
+        var bleep = new Audio('/audio/bleep2.wav');
+        bleep.play();
+    }
+    if (window.confirm("Do you really want to quit this awesome game?")) {
+        window.location = "/";
+    }    
+  }
+
+  this.fullscreen = function() {
+    if (!this.isMuted()) {
+        var bleep = new Audio('/audio/bleep2.wav');
+        bleep.play();
+    }
+    var elem = document.documentElement;
+    var buttonText = document.getElementsByClassName('button')[0];
+
+    if(!this.fullscreenOn) {
+        buttonText.innerHTML = "go back";
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+            elem.webkitRequestFullscreen();
+        }
+    } else {
+        buttonText.innerHTML = "fullscreen";
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        }
+    }
+    this.fullscreenOn = !this.fullscreenOn;       
   }
 
   // execution of 'constructor'
@@ -299,6 +361,7 @@ function Pinline(pinline, game) {
   }
 
   this.random = function(){
+
     var available_colors = ["red", "yellow", "blue", "green", "gray", "purple", "black", "orange"];
     this.clear();
     for(var i = 0; i < this.pins.length; i++){
