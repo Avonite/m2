@@ -1,12 +1,16 @@
+// external modules
 var express = require("express");
 var http = require("http");
 var path = require("path");
 
+// module that hold web socket server logic
 var wss = require("./app/communication/webSocketServer");
 
+// set port
 var port = process.argv[2];
 var app = express();
 
+// set view and view engine
 app.set('views', path.join(__dirname, "/views"));
 app.set("view engine", "ejs");
 
@@ -17,9 +21,9 @@ app.use('/', router);
 // serve static files
 app.use(express.static(__dirname + "/public"));
 
-// Listen for incoming requests
+// listen for incoming requests
 http.createServer(app).listen(port);
 
 
-// Setup websocket server
+// setup websocket server
 wss.start();

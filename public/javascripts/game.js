@@ -25,13 +25,13 @@ function Game() {
     // loop over pin-line html elements
     for(var i = 0; i < pinlines.length; i++){
       // create Pinline object for every pin-line html element and add it to the pinlines array
-      this.pinlines.push(new Pinline(pinlines[i], this));
+      this.pinlines.push(new Pinline(pinlines[i], this, false));
     }
 
     this.pinlines.reverse();
 
     // store the codeline html element
-    this.codeline = new Pinline(document.getElementsByClassName("maker-screen")[0].getElementsByClassName("pin-line")[0], this);
+    this.codeline = new Pinline(document.getElementsByClassName("maker-screen")[0].getElementsByClassName("pin-line")[0], this, true);
     // store the message html element
     this.messageElement = document.querySelector(".message-board p");
 
@@ -282,7 +282,7 @@ function Game() {
 }
 
 // object representation of pin-line in the game
-function Pinline(pinline, game) {
+function Pinline(pinline, game, codeline) {
   this.game = game;               // Game instance this Pinline belongs to
   this.element = pinline;         // html element which this Pinline instance represents
   this.done = false;              // whether this Pinline is done, so it cannot be changed anymore
@@ -292,6 +292,7 @@ function Pinline(pinline, game) {
   this.correct_position_slider = null;
   this.correct_color_slider = null;
   this.pins = [];                 // all the pins in this pinline
+  this.codeline = codeline;
 
   // 'constructor'
   // will be executed when new Pinline is instanciated
@@ -323,6 +324,11 @@ function Pinline(pinline, game) {
   // whether the maker has verified this Pinline
   this.isChecked = function(){
     return this.checked
+  }
+
+  // whether this pinline is the codeline
+  this.isCodeline = function() {
+      return this.codeline;
   }
 
   // get the first uncolored pin in this line
@@ -479,6 +485,7 @@ function Pin(pin, pinline) {
   this.forceColor = function(c){
     this.color = c;
     this.element.classList.add(c);
+
   }
 
   // unset the color of this pin
