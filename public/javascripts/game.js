@@ -13,7 +13,7 @@ function Game() {
   // will be run at the when new Game object is created
   this.init = function(){
     // setup websocket to server
-    this.ws = new WebSocket("ws://localhost:8080");
+    this.ws = new WebSocket("ws://"+ window.location.hostname +":8080");
     // add listener for incoming data
     this.ws.addEventListener("message", this.receive.bind(this));
     // tell server to participate in game
@@ -327,7 +327,7 @@ function Game() {
         } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
             document.webkitExitFullscreen();
         }
-    }       
+    }
   }
 
   // execution of 'constructor'
