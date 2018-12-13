@@ -150,6 +150,7 @@ header h2 {
 .play-button {
     margin-top: 50px;
     position: relative;
+    background: #ffffff;
 }
 
 .play-button a {
@@ -171,6 +172,38 @@ header h2 {
 .play-button a:hover {
     background-color: #21427c;
     color: #ffffff;
+}
+
+.play-button a:active {
+    transform: scale(1.05);
+}
+
+.play-button a:after, .play-button a:before {
+    border: 2px solid #21427c;
+    content: "";
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border-radius: 100%;
+    z-index: -1;
+    transition: background 0.3s ease-in-out 0s;
+}
+
+
+.play-button a:hover:before, .play-button a:hover:after {
+    background: #FF4019;
+}
+
+.play-button a:after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+.play-button a:before {
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(50%);
 }
 
 .text-cloud {
