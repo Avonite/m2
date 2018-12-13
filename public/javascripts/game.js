@@ -37,7 +37,7 @@ function Game() {
 
     this.mute_btn = document.querySelector(".volume");
     this.mute_btn.addEventListener("click", this.changeMute.bind(this));
-    
+
     new Audio('/audio/bleep1.wav');
     new Audio('/audio/bleep2.wav');
   }
@@ -80,6 +80,16 @@ function Game() {
     for(var i = 0; i < this.pinlines.length; i++){
       var pinline = this.pinlines[i];
       if(!pinline.isDone()){
+        return pinline;
+      }
+    }
+    return null;
+  }
+
+  this.pinlineToVerify = function(){
+    for(var i = 0; i < this.pinlines.length; i++){
+      var pinline = this.pinlines[i];
+      if(!pinline.isChecked()){
         return pinline;
       }
     }
@@ -180,6 +190,36 @@ function Game() {
         this.switchTurns();
       break;
 
+      case "verifiedPinline":
+        this.pinlineToVerify().setCorrectColor(props.correct_color);
+        this.pinlineToVerify().setCorrectPosition(props.correct_position);
+        this.pinlineToVerify().setChecked(true);
+        this.message("Please retry");
+        this.switchTurns();
+      break;
+
+      case "brakerWins":
+        if(this.isBraker()){
+          this.message("Victory!");
+          this.codeline.forceColors(props.colors);
+        }
+      break;
+
+      case "brakerLoses":
+        if(this.isBraker()){
+          this.message("You lost!");
+          this.codeline.forceColors(props.colors);
+        }
+      break;
+
+      case "resetGame":
+      console.log("Game Reset!");
+        for(var x = 0; x < this.pinlines.length; x++){
+          this.pinlines[x].hardReset();
+        }
+        this.codeline.hardReset();
+      break;
+
       // other player disconnected
       // redirect to splash screen
       case "disconnected":
@@ -187,11 +227,11 @@ function Game() {
         let $this = this;
         setInterval(function () {
             if (i == 0) {
-                window.location = "/"           
+                window.location = "/"
             }
             $this.message("Opponent disconnected, abort mission in: " + i)
             i--;
-        }, 1000);        
+        }, 1000);
     }
 
   }
@@ -206,7 +246,11 @@ function Game() {
     if(this.isBraker()){
       this.currentPinline().check();
     }else{
-      this.codeline.check();
+      if(!this.codeline.isDone()){
+        this.codeline.check();
+        return;
+      }
+      this.pinlineToVerify().verify();
     }
   }
 
@@ -243,7 +287,7 @@ function Game() {
     }
     if (window.confirm("Do you really want to quit this awesome game?")) {
         window.location = "/";
-    }    
+    }
   }
 
   this.fullscreen = function() {
@@ -274,7 +318,7 @@ function Game() {
             document.webkitExitFullscreen();
         }
     }
-    this.fullscreenOn = !this.fullscreenOn;       
+    this.fullscreenOn = !this.fullscreenOn;
   }
 
   // execution of 'constructor'
@@ -326,6 +370,10 @@ function Pinline(pinline, game, codeline) {
     return this.checked
   }
 
+  this.setChecked = function(checked){
+    this.checked = checked;
+  }
+
   // whether this pinline is the codeline
   this.isCodeline = function() {
       return this.codeline;
@@ -340,6 +388,37 @@ function Pinline(pinline, game, codeline) {
       }
     }
     return null;
+  }
+
+  this.verify = function(){
+    if(!this.game.isMaker()){
+      return;
+    }
+    this.game.switchTurns();
+    this.checked = true;
+    this.game.message("Opponent can retry");
+    this.game.send("verifiedPinline", {correct_position: this.correct_position, correct_color: this.correct_color});
+
+    var colors = [];
+    for(var i = 0; i < this.pins.length; i++){
+      var color = this.pins[i].getColor();
+      if(color == null){
+        this.game.message("Fill all pins");
+        return false;
+      }
+      colors.push(color);
+    }
+
+    if(this.correct_position == 4){
+      this.game.message("Opponent has won!");
+      this.game.send("brakerWins", {colors: colors});
+      return;
+    }
+
+    if(this.game.currentPinline() == null){
+      this.game.message("You won!");
+      this.game.send("brakerLoses", {colors: colors});
+    }
   }
 
   // braker: validate input and then tell maker to verify this guess
@@ -407,8 +486,18 @@ function Pinline(pinline, game, codeline) {
     }
   }
 
+  this.hardReset = function(){
+    this.setChecked(false);
+    this.setDone(false);
+    for(var x = 0; x < this.pins.length; x++){
+      this.pins[x].forceUnsetColor();
+    }
+    this.setCorrectColor(0);
+    this.setCorrectPosition(0);
+  }
+
   this.changeCorrectColor = function(){
-    if(!this.game.isMaker() || !this.isDone() || this.checked){
+    if(!this.game.isMaker() || !this.isDone() || this.isChecked()){
       return false;
     }
     var cl = this.correct_color_slider.classList;
@@ -425,25 +514,34 @@ function Pinline(pinline, game, codeline) {
     this.correct_position = this.updateSlider(cl, this.correct_position);
   }
 
+  this.setCorrectColor = function(amount){
+    this.correct_color = amount;
+    this.updateSlider(this.correct_color_slider.classList, this.correct_color - 1);
+  }
+
+  this.setCorrectPosition = function(amount){
+    this.correct_position = amount;
+    this.updateSlider(this.correct_position_slider.classList, this.correct_position - 1);
+  }
+
   this.updateSlider = function(cl, current){
+    cl.remove('slider-one');
+    cl.remove('slider-two');
+    cl.remove('slider-three');
+    cl.remove('slider-four');
     if(current == 0){
-      cl.remove('slider-four');
       cl.add("slider-one");
     }
     if(current == 1){
-      cl.remove('slider-one');
       cl.add("slider-two");
     }
     if(current == 2){
-      cl.remove('slider-two');
       cl.add("slider-three");
     }
     if(current == 3){
-      cl.remove('slider-three');
       cl.add("slider-four");
     }
     if(current == 4){
-      cl.remove('slider-four');
       current = -1;
     }
     current++;
