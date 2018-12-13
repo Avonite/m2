@@ -26,5 +26,5 @@ function User(ws){
   }
 }
 
-
 module.exports = User;
+

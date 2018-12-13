@@ -1,5 +1,55 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
 
+@-webkit-keyframes shake {
+    from,
+    to {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      -webkit-transform: translate3d(-5px, 0, 0);
+      transform: translate3d(-5px, 0, 0);
+    }
+  
+    20%,
+    40%,
+    60%,
+    80% {
+      -webkit-transform: translate3d(5px, 0, 0);
+      transform: translate3d(5px, 0, 0);
+    }
+  }
+  
+  @keyframes shake {
+    from,
+    to {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      -webkit-transform: translate3d(-5px, 0, 0);
+      transform: translate3d(-5px, 0, 0);
+    }
+  
+    20%,
+    40%,
+    60%,
+    80% {
+      -webkit-transform: translate3d(5px, 0, 0);
+      transform: translate3d(5px, 0, 0);
+    }
+  }
+
 html, body {
     margin: 0;
     padding: 0;
@@ -28,6 +78,8 @@ body {
     position: absolute;
     top: 300px;
     left: 200px;
+    max-width: 400px;
+    text-align: center;
     font-size: 2em;
     font-weight: 700;
     color: #21427c;
@@ -39,6 +91,42 @@ body {
     top: 20px;
     width: 50px;
     height: 50px;
+    cursor: pointer;
+}
+
+.volume:hover {
+    -webkit-animation-name: shake;
+    animation-name: shake;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.volume.muted {
+    opacity: 0.3;
+}
+
+.fullscreen {
+    position: fixed;
+    right: 120px;
+    top: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+
+.fullscreen img {
+    width: 100%;    
+}
+
+.fullscreen img:hover {
+    -webkit-animation-name: shake;
+    animation-name: shake;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
 }
 
 .playing-field {
@@ -99,6 +187,7 @@ body {
     background-color: gray;
     /* z-index: -1; */
     transition: transform 0.3s linear 0s;
+    cursor: pointer;
 }
 
 .slider-right.slider-one {

@@ -1,3 +1,12 @@
+// ==========================================================================
+// =  Games (IIFE) that returns two functions:                              =            
+// =  - connectUser:              =
+// =               A new user is created when someone connects to this port.= 
+// =  - broadcast: sends a message to all open websockets                   =
+// ==========================================================================
+
+
+
 const Game = require("../models/Game");
 const wss = require("../communication/webSocketServer");
 
