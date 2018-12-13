@@ -40,6 +40,18 @@ function Game() {
 
     new Audio('/audio/bleep1.wav');
     new Audio('/audio/bleep2.wav');
+
+    var $this = this;
+
+    document.addEventListener('fullscreenchange', function(event) {
+      var fullscreenButton = document.getElementById('fullscreen-button');
+      if ($this.fullscreenOn) {
+        fullscreenButton.src = "/images/expand.svg";
+      } else {
+        fullscreenButton.src = "/images/exit.svg";
+      }
+      $this.fullscreenOn = !$this.fullscreenOn;
+    });
   }
 
   // whether this user is a braker
@@ -62,6 +74,7 @@ function Game() {
     return this.started;
   }
 
+  // change visual appearance of mute button
   this.changeMute = function(){
     this.muted = !this.muted;
     if(this.isMuted()){
@@ -233,7 +246,6 @@ function Game() {
             i--;
         }, 1000);
     }
-
   }
 
   // braker: check current pinline, aka ask maker for verification
@@ -300,7 +312,6 @@ function Game() {
     var fullscreenButton = document.getElementById('fullscreen-button');
 
     if(!this.fullscreenOn) {
-        fullscreenButton.src = "/images/exit.svg";
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
         } else if (elem.mozRequestFullScreen) { /* Firefox */
@@ -309,7 +320,6 @@ function Game() {
             elem.webkitRequestFullscreen();
         }
     } else {
-        fullscreenButton.src = "/images/expand.svg";
         if (document.exitFullscreen) {
             document.exitFullscreen();
         } else if (document.mozCancelFullScreen) { /* Firefox */
@@ -317,8 +327,7 @@ function Game() {
         } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
             document.webkitExitFullscreen();
         }
-    }
-    this.fullscreenOn = !this.fullscreenOn;
+    }       
   }
 
   // execution of 'constructor'
