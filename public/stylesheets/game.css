@@ -6,7 +6,7 @@
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
     }
-  
+
     10%,
     30%,
     50%,
@@ -15,7 +15,7 @@
       -webkit-transform: translate3d(-5px, 0, 0);
       transform: translate3d(-5px, 0, 0);
     }
-  
+
     20%,
     40%,
     60%,
@@ -24,14 +24,14 @@
       transform: translate3d(5px, 0, 0);
     }
   }
-  
+
   @keyframes shake {
     from,
     to {
       -webkit-transform: translate3d(0, 0, 0);
       transform: translate3d(0, 0, 0);
     }
-  
+
     10%,
     30%,
     50%,
@@ -40,7 +40,7 @@
       -webkit-transform: translate3d(-5px, 0, 0);
       transform: translate3d(-5px, 0, 0);
     }
-  
+
     20%,
     40%,
     60%,
@@ -117,7 +117,7 @@ body {
 }
 
 .fullscreen img {
-    width: 100%;    
+    width: 100%;
 }
 
 .fullscreen img:hover {
@@ -171,6 +171,7 @@ body {
     margin: 10px;
     border: 3px solid black;
     border-radius: 100%;
+    transition: background 0.3s ease-in-out 0s;
 }
 
 .maker-screen .pin-line .pin {
