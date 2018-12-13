@@ -7,10 +7,10 @@ var splash = (function(){
 
   function init() {
     text_cloud = document.getElementById("text-cloud");
-    web_socket = new WebSocket("ws://localhost:8080");
+    web_socket = new WebSocket("ws://"+ window.location.hostname +":8080");
 
     web_socket.onmessage = process_incoming;
-    
+
     new Audio('/audio/into1.mp3');
   }
 
