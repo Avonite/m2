@@ -41,17 +41,10 @@ function Game() {
     new Audio('/audio/bleep1.wav');
     new Audio('/audio/bleep2.wav');
 
-    var $this = this;
-
-    document.addEventListener('fullscreenchange', function(event) {
-      var fullscreenButton = document.getElementById('fullscreen-button');
-      if ($this.fullscreenOn) {
-        fullscreenButton.src = "/images/expand.svg";
-      } else {
-        fullscreenButton.src = "/images/exit.svg";
-      }
-      $this.fullscreenOn = !$this.fullscreenOn;
-    });
+    document.addEventListener('fullscreenchange', this.fullscreenChange.bind(this));
+    document.addEventListener('mozfullscreenchange', this.fullscreenChange.bind(this));
+    document.addEventListener('webkitfullscreenchange', this.fullscreenChange.bind(this));
+    document.addEventListener('msfullscreenchange', this.fullscreenChange.bind(this));
   }
 
   // whether this user is a braker
@@ -328,6 +321,16 @@ function Game() {
             document.webkitExitFullscreen();
         }
     }
+  }
+
+  this.fullscreenChange = function(event) {
+    var fullscreenButton = document.getElementById('fullscreen-button');
+    if (this.fullscreenOn) {
+      fullscreenButton.src = "/images/expand.svg";
+    } else {
+      fullscreenButton.src = "/images/exit.svg";
+    }
+    this.fullscreenOn = !this.fullscreenOn;
   }
 
   // execution of 'constructor'
