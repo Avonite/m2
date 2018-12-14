@@ -1,13 +1,20 @@
 // ==========================================================================
 // =  Module for Game object                                                =            
-// =  - Attributes:                                                         =
-// =              - maker:                       = 
-// =              - braker:
-// =              - active:
-// =              
-// =  - broadcast:                                                          =
-// =              Sends a message to all open websockets                    =
-// = games: array that holds all active games, not directly accessible      =
+// =   Attributes:                                                          =
+// =    - maker: user object that is the maker                              = 
+// =    - braker: default null, is set when a second player connect;        =
+// =              user object that is the braker                            =
+// =    - active: boolean whether game is running                           =
+// =   Functions:                                                           =
+// =    - setBraker: assigns a user object to braker attribute; starts game =
+// =                 if game was active.                                    =
+// =    - isAvailable: returns true if game is waiting for braker           =
+// =    - isActive: returns active attribute                                =
+// =    - reverse: reverses roles                                           =
+// =    - makerDisconnected: resets game attr. and sends actions to client  =
+// =    - brakerDisconnected: resets game attr. and sends actions to client =
+// =    - receiveFromBraker: handles actions sends to maker                 =
+// =    - receiveFromMaker: handles actions send to braker                  =
 // ==========================================================================
 
 function Game(maker){
@@ -16,6 +23,7 @@ function Game(maker){
   this.braker = null;
   this.active = false;
 
+  // Add event handlers to websocket
   this.maker.getWebSocket().on("message", receiveFromMaker.bind(this));
   this.maker.getWebSocket().on("close", makerDisconnected.bind(this));
 
@@ -27,50 +35,55 @@ function Game(maker){
     this.braker = braker;
     this.active = true;
 
+    // Add event handlers to websocket
     this.braker.getWebSocket().on("message", receiveFromBraker.bind(this));
     this.braker.getWebSocket().on("close", brakerDisconnected.bind(this));
 
+    // If game is active, inform braker of role and inform both that game has started
     if(this.isActive()){
       this.braker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "braker"}}));
 
       this.maker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
       this.braker.getWebSocket().send(JSON.stringify({action: "started", props: {}}));
     }
-
   }
 
   // Check if braker is needed to start game
   this.isAvailable = function(){
     return this.maker != null && this.braker == null;
   }
-
+  
+  // Returns active attribute
   this.isActive = function(){
     return this.active;
   }
 
+  // Reverses roles of maker and braker
   this.reverse = function(){
+    // Remove event listeners
     this.maker.getWebSocket()._events = {};
     this.braker.getWebSocket()._events = {};
 
+    // Change roles
     var maker = this.maker;
     this.maker = this.braker;
     this.braker = maker;
 
+    // Add event listeners to websocket maker and braker
     this.maker.getWebSocket().on("message", receiveFromMaker.bind(this));
     this.maker.getWebSocket().on("close", makerDisconnected.bind(this));
-
     this.braker.getWebSocket().on("message", receiveFromBraker.bind(this));
     this.braker.getWebSocket().on("close", brakerDisconnected.bind(this));
 
+    // Send actions to client
     this.maker.getWebSocket().send(JSON.stringify({action: "resetGame", props: {}}));
     this.braker.getWebSocket().send(JSON.stringify({action: "resetGame", props: {}}));
-
     this.maker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "maker"}}));
     this.braker.getWebSocket().send(JSON.stringify({action: "yourRole", props: {role: "braker"}}));
   }
-
 }
 
+// Sends an action to the braker if maker disconnected
 function makerDisconnected(){
   this.active = false;
   this.maker = null;
@@ -80,6 +93,7 @@ function makerDisconnected(){
   console.log("Maker disconnected");
 }
 
+// Sends an action to the maker if braker disconnected
 function brakerDisconnected(){
   this.active = false;
   this.braker = null;
@@ -89,6 +103,7 @@ function brakerDisconnected(){
   console.log("Braker disconnected");
 }
 
+// Handles actions send by maker 
 function receiveFromMaker(data){
   if(!this.isActive()){
     return false;
@@ -108,6 +123,7 @@ function receiveFromMaker(data){
     return;
   }
 
+  // Action handler
   switch(action){
     case "codeReady":
       this.braker.getWebSocket().send(JSON.stringify({
@@ -153,6 +169,7 @@ function receiveFromMaker(data){
   }
 }
 
+// Handles actions send by braker
 function receiveFromBraker(data){
   if(!this.isActive()){
     return false;
@@ -172,6 +189,7 @@ function receiveFromBraker(data){
     return;
   }
 
+  // Sends action to the websocket client
   switch(action){
     case "verifyPinline":
       this.maker.getWebSocket().send(JSON.stringify(data));

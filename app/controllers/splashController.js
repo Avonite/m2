@@ -1,5 +1,6 @@
 // ==========================================================================
-// = Renders splash.ejs template with current number of games               =
+// = Renders splash.ejs template with current number of games and total     = 
+// =     visits. Sets a cookie to track user visits.                        =
 // ==========================================================================
 
 const Games = require("../modules/Games");

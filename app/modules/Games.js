@@ -1,10 +1,12 @@
 // ==========================================================================
-// =  Games (IIFE) that returns two functions:                              =            
-// =  - connectUser:                                                        =
+// = Games (IIFE) that returns two functions:                               =
+// = Attributes:                                                            =
+// =    - games: array that holds all active games, not directly accessible = 
+// = Functions:                                                             =
+// =    - connectUser:                                                      =
 // =              A new user is created when someone connects to this port. = 
-// =  - broadcast:                                                          =
+// =    - broadcast:                                                        =
 // =              Sends a message to all open websockets                    =
-// = games: array that holds all active games, not directly accessible      =
 // ==========================================================================
 
 const Game = require("../models/Game");
