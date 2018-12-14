@@ -1,6 +1,6 @@
 function Game() {
   this.started = false;         // whether both players are connected
-  this.start_time = null;         // whether both players are connected
+  this.start_time = null;       // whether both players are connected
   this.type = null;             // type of this player, either maker or braker
   this.myTurn = false;          // is it this users turn?
   this.codeline = null;         // codeline of maker
