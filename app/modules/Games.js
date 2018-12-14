@@ -13,6 +13,7 @@ const wss = require("../communication/webSocketServer");
 module.exports = (function(){
 
   var games = [];
+  var games_played = 0;
 
   function connectUser(user) {
     // Check for games without braker
@@ -29,6 +30,7 @@ module.exports = (function(){
     // if not found, create a new game
     // this user will be the maker
     var game = new Game(user);
+    games_played++;
     games.push(game);
     wss.broadcast({action: 'playerWaitingChange', props: {playerIsWaiting: true}});
   }
@@ -46,9 +48,14 @@ module.exports = (function(){
     return size;
   }
 
+  function gamesPlayed(){
+    return games_played;
+  }
+
   return {
     connectUser: connectUser,
     size: size,
+    gamesPlayed: gamesPlayed,
   }
 
 })();

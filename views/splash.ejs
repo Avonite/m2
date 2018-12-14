@@ -26,13 +26,19 @@
                 <div class="text-content">
                     active<br/>games
                 </div>
-                <div class="number-content"><%= games %></div>
+                <div class="number-content"><%= games.size() %></div>
             </div>
             <div class="current-highscore">
                 <div class="text-content">
-                    current<br/>highscore
+                    total<br/>games
                 </div>
-                <div class="number-content">11</div>
+                <div class="number-content"><%= games.gamesPlayed() %></div>                
+            </div>
+            <div class="total-visits">
+                <div class="text-content">
+                    total<br />visits
+                </div>
+                <div class="number-content"><%= numberOfVisits %></div>
             </div>
         </div>
         <div class="play-button">

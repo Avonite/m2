@@ -1,5 +1,6 @@
 function Game() {
   this.started = false;         // whether both players are connected
+  this.start_time = null;         // whether both players are connected
   this.type = null;             // type of this player, either maker or braker
   this.myTurn = false;          // is it this users turn?
   this.codeline = null;         // codeline of maker
@@ -41,17 +42,10 @@ function Game() {
     new Audio('/audio/bleep1.wav');
     new Audio('/audio/bleep2.wav');
 
-    var $this = this;
-
-    document.addEventListener('fullscreenchange', function(event) {
-      var fullscreenButton = document.getElementById('fullscreen-button');
-      if ($this.fullscreenOn) {
-        fullscreenButton.src = "/images/expand.svg";
-      } else {
-        fullscreenButton.src = "/images/exit.svg";
-      }
-      $this.fullscreenOn = !$this.fullscreenOn;
-    });
+    document.addEventListener('fullscreenchange', this.fullscreenChange.bind(this));
+    document.addEventListener('mozfullscreenchange', this.fullscreenChange.bind(this));
+    document.addEventListener('webkitfullscreenchange', this.fullscreenChange.bind(this));
+    document.addEventListener('msfullscreenchange', this.fullscreenChange.bind(this));
   }
 
   // whether this user is a braker
@@ -178,6 +172,14 @@ function Game() {
       // both users are connected
       case "started":
         this.started = true;
+        this.start_time = new Date();
+        var timer = document.getElementById("timer");
+        setInterval(function(){
+          var diff = (new Date().getTime() - this.start_time.getTime()) / 1000;
+          var mins = new String(Math.floor(diff / 60)).padStart(2, '0');
+          var secs = new String(Math.floor(diff % 60)).padStart(2, '0');
+          timer.innerHTML = mins + ":" + secs;
+        }.bind(this), 1000);
         if(this.isMaker()){
           this.message("Your opponent is ready");
         }
@@ -328,6 +330,16 @@ function Game() {
             document.webkitExitFullscreen();
         }
     }
+  }
+
+  this.fullscreenChange = function(event) {
+    var fullscreenButton = document.getElementById('fullscreen-button');
+    if (this.fullscreenOn) {
+      fullscreenButton.src = "/images/expand.svg";
+    } else {
+      fullscreenButton.src = "/images/exit.svg";
+    }
+    this.fullscreenOn = !this.fullscreenOn;
   }
 
   // execution of 'constructor'
