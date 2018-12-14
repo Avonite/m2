@@ -179,31 +179,36 @@ header h2 {
 }
 
 .play-button a:after, .play-button a:before {
-    border: 2px solid #21427c;
+    border: 2px solid #FF4019;
     content: "";
     width: 40px;
     height: 40px;
     position: absolute;
     border-radius: 100%;
     z-index: -1;
-    transition: background 0.3s ease-in-out 0s;
+    /* background: #FF4019; */
+    transition: transform 0.5s cubic-bezier(0.42, 0, 0.04, 1.66) 0s;
 }
 
 
-.play-button a:hover:before, .play-button a:hover:after {
-    background: #FF4019;
+.play-button a:hover:before{
+    transform: translateY(-50%) translateX(-50%);
+}
+
+.play-button a:hover:after {
+    transform: translateY(-50%) translateX(50%);
 }
 
 .play-button a:after {
     left: 100%;
     top: 50%;
-    transform: translateY(-50%) translateX(-50%);
+    transform: translateY(-50%) translateX(-100%);
 }
 
 .play-button a:before {
     right: 100%;
     top: 50%;
-    transform: translateY(-50%) translateX(50%);
+    transform: translateY(-50%) translateX(100%);
 }
 
 .text-cloud {
