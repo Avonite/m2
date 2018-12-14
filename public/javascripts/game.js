@@ -1,5 +1,6 @@
 function Game() {
   this.started = false;         // whether both players are connected
+  this.start_time = null;         // whether both players are connected
   this.type = null;             // type of this player, either maker or braker
   this.myTurn = false;          // is it this users turn?
   this.codeline = null;         // codeline of maker
@@ -171,6 +172,14 @@ function Game() {
       // both users are connected
       case "started":
         this.started = true;
+        this.start_time = new Date();
+        var timer = document.getElementById("timer");
+        setInterval(function(){
+          var diff = (new Date().getTime() - this.start_time.getTime()) / 1000;
+          var mins = new String(Math.floor(diff / 60)).padStart(2, '0');
+          var secs = new String(Math.floor(diff % 60)).padStart(2, '0');
+          timer.innerHTML = mins + ":" + secs;
+        }.bind(this), 1000);
         if(this.isMaker()){
           this.message("Your opponent is ready");
         }
