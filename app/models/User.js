@@ -1,3 +1,12 @@
+// ==========================================================================
+// = Module for user object.                                                =
+// = Attributes:                                                            =
+// =    - ws: user websocket                                                =
+// = Functions:                                                             =
+// =    - on('message'): if message is 'startGame' connects user to Games   =
+// =    - getWebSocket: returns user websocket                              =
+// ========================================================================== 
+
 const Games = require("../modules/Games");
 
 function User(ws){
