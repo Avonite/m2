@@ -1,0 +1,61 @@
+Example JSON
+
+{
+  "action": "verifiedPinline",
+  "props": {
+    "correct_position": 2,
+    "correct_color": 1
+  }
+}
+
+
+
+codeReady
+maker -> server -> braker
+This sign let's the braker know that the maker has come up with a secret code of four colors.
+The braker then knows it's his/her turn to make a guess.
+
+verifiedPinline
+maker -> server -> braker
+Let the braker know the maker has verified his/her guess. It parses along the amount of correct colors and correct positions.
+Then the braker is asked to retry.
+
+brakerWins
+maker -> server -> braker
+A sign to tell the braker he/she has won this game. This sign is sent whenever the maker says the braker has guessed four correct positions.
+
+brakerLoses
+maker -> server -> braker
+If the maker verified the tenth line as being incorrect. This signal is sent to the braker to let him/her know he/she lost.
+
+
+
+verifyPinline
+braker -> server -> maker
+Signal the maker the braker has finished his guess. The colors are sent along and the maker is requested to verify the guess.
+
+
+
+startGame
+user -> server
+Tell the server that you want to participate in a game. The server will check if a game is available or start a new one.
+Then the user gets a role assigned by the server.
+
+
+
+started
+server -> user
+Let both braker and maker know they're connected. The timer starts running and the maker can come up with a secret.
+
+yourRole
+server -> user
+Let's the user know whether he/she is the maker or the braker. The role is sent along in the props.
+
+resetGame
+server -> user
+The previous game has ended, so this action tells the clients to reset all the pins and sliders.
+At the same time the users switch roles, using the 'yourRole' action.
+
+disconnected
+server -> user
+Tell this user that his/her opponent has been disconnected. This user will then be redirected to the splash screen.
