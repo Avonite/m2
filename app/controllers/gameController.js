@@ -1,4 +1,6 @@
-// renders game.ejs template
+// ==========================================================================
+// Renders game.ejs template                                                =
+// ==========================================================================
 
 module.exports.show = function(req, res){
   res.render("game");
